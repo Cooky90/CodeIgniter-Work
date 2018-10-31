@@ -37,5 +37,18 @@ class Pages extends CI_Controller
 		$data['content'] = 'Pages/profile';
 		$this->load->view('Layouts/master', $data);
 	}
+
+	public function forms()
+	{
+		echo base_url();
+		$data['title'] = 'CI | Forms';
+		$data['content'] = 'Pages/forms';
+		$this->load->view('Layouts/master', $data);
+	}
+
+	public function form_submitted()
+	{
+		echo 'form submitted';
+	}
 }
 ?>

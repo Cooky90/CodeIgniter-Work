@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Create_Posts extends CI_Migration
+class Migration_Create_Users extends CI_Migration
 {
 	public function up()
 	{
@@ -13,22 +13,22 @@ class Migration_Create_Posts extends CI_Migration
 				'auto_increment' => TRUE
 			),
 
-				'title'=>array(
+				'email' =>array(
 				'type'=>'VARCHAR',
 				'constraint'=> 100,
 			),
 
-				'body' => array(
-				'type'=>'TEXT',
-				'null' => TRUE
+				'name' => array(
+				'type'=>'VARCHAR',
+				'constraint'=> 100
 			),			
 		));
 		$this->dbforge->add_key('id',TRUE);
-		$this->dbforge->create_table('posts');
+		$this->dbforge->create_table('users');
 	}
 
 	public function down()
 	{
-		$this->dbforge->drop_table('posts');
+		$this->dbforge->drop_table('users');
 	}
 }
