@@ -50,5 +50,29 @@ class Pages extends CI_Controller
 	{
 		echo 'form submitted';
 	}
+
+	public function add_posts()
+	{
+		$data['title'] = 'CI | Add Post';
+		$data['content'] = 'Pages/add_posts';
+		$this->load->view('Layouts/master', $data);
+	}
+
+	public function form_posted()
+	{
+		$this->form_validation->set_rules('title', 'Title', 'trim|required');
+		$this->form_validation->set_rules('body', 'Body', 'trim|required');
+
+		if($this->form_validation->run() === FALSE)
+		{
+			echo 'Data not valid!';
+		}
+		else
+		{
+			$data['title'] = 'CI | Form Posted';
+			$data['content'] = 'Pages/form_posted';
+			$this->load->view('Layouts/master', $data);
+		}		
+	}
 }
 ?>
