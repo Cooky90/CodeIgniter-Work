@@ -6,6 +6,7 @@ class Pages extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('page');
 	}
 
 	public function index()
@@ -60,19 +61,69 @@ class Pages extends CI_Controller
 
 	public function form_posted()
 	{
-		$this->form_validation->set_rules('title', 'Title', 'trim|required');
+		$this->form_validation->set_rules('title', 'Title', 'trim|required|callback_title_check');
 		$this->form_validation->set_rules('body', 'Body', 'trim|required');
 
 		if($this->form_validation->run() === FALSE)
 		{
-			echo 'Data not valid!';
+			$data['title'] = 'CI | Add Post';
+			$data['content'] = 'Pages/add_posts';
+			$this->load->view('Layouts/master', $data);
 		}
 		else
 		{
+			$title = $this->input->post('title');
+			$body = $this->input->post('body');
+			$data = array(
+				'title' => $title,
+				'body' => $body
+			);
+
+			if($this->page->create($data))
+			{
 			$data['title'] = 'CI | Form Posted';
 			$data['content'] = 'Pages/form_posted';
 			$this->load->view('Layouts/master', $data);
+			}
+			else
+			{
+				echo 'no data';
+			}
 		}		
+	}
+
+	public function title_check($str)
+	{
+		if($str == 'test')
+		{
+			$this->form_validation->set_message('title_check','The title should not be test');
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	public function posts()
+	{
+		$data['title'] = 'CI | All Posts';
+		$data['content'] = 'Pages/posts';
+		$data['get_posts'] = $this->page->get_posts();
+		$this->load->view('Layouts/master', $data);
+	}
+
+	public function view_post()
+	{
+		$id = $this->uri->segment(3);
+		if(empty($id))
+		{
+			show_404();
+		}
+		$data['title'] = 'CI | View Post';
+		$data['content'] = 'Pages/view_post';
+		$data['get_posts'] = $this->page->view_post($id);
+		$this->load->view('Layouts/master', $data);
 	}
 }
 ?>
