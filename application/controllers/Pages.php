@@ -125,5 +125,46 @@ class Pages extends CI_Controller
 		$data['get_posts'] = $this->page->view_post($id);
 		$this->load->view('Layouts/master', $data);
 	}
+
+	public function edit_post()
+	{
+		$id = $this->uri->segment(3);
+		if(empty($id))
+		{
+			show_404();
+		}
+		$data['title'] = 'CI | Edit Post';
+		$data['content'] = 'Pages/edit_post';
+		$data['get_posts'] = $this->page->view_post($id);
+		$this->load->view('Layouts/master', $data);
+
+	}
+
+	public function update_post()
+	{
+		$id = $this->input->post('post_id');
+		$title = $this->input->post('title');
+		$body = $this->input->post('body');
+
+		$data = array(
+			'title' => $title,
+			'body' => $body
+		);
+		if($this->page->update_post($data, $id))
+		{
+			redirect('pages/posts');
+		}
+	}
+
+		public function delete_post()
+	{
+		$id = $this->uri->segment(3);
+		if($this->page->delete_post($id))
+		{
+			redirect('pages/posts');
+		}
+	}
+
+
 }
 ?>
